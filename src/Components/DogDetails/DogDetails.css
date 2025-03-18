@@ -5,13 +5,14 @@
   padding: 15px;
   justify-content: center;
   align-items: center;
-  
 }
 
 .dog-card {
   background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);
   border-radius: 15px;
   box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
+  width: 180px;
+  height: 250px;
   padding: 20px;
   text-align: center;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;

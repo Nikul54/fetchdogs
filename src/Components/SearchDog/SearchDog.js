@@ -44,7 +44,6 @@ const SearchDog = () => {
     }
   };
 
-
   const fetchDogs = useCallback(async () => {
     try {
       if (!selectedBreeds.length && !zipCode && !ageMin && !ageMax) {
@@ -106,7 +105,15 @@ const SearchDog = () => {
     if (hasSearched) {
       fetchDogs();
     }
-  }, [selectedBreeds, zipCode, ageMin, ageMax, fetchDogs, hasSearched]);
+  }, [
+    selectedBreeds,
+    zipCode,
+    ageMin,
+    ageMax,
+    fetchDogs,
+    hasSearched,
+    sortOrder,
+  ]);
 
   const toggleSortOrder = () => {
     setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
@@ -119,11 +126,6 @@ const SearchDog = () => {
     setHasSearched(true); // Ensures fetchDogs is called only after user interaction
   };
 
-  const handleZipChange = (e) => {
-    setZipCode(e.target.value);
-    setHasSearched(true);
-  };
-
   const handleAgeMinChange = (e) => {
     setAgeMin(e.target.value);
     setHasSearched(true);
@@ -134,12 +136,19 @@ const SearchDog = () => {
     setHasSearched(true);
   };
 
+  const handleZipChange = (e) => {
+    const value = e.target.value;
+    if (/^\d{0,5}$/.test(value)) {
+      setZipCode(value);
+      setHasSearched(true);
+    }
+  };
+
   return (
     <div className="dog-selection-container">
       <h1 className="title">Pick your favorite Dog!</h1>
 
-      <div className="breed-selection">
-        <label className="label">Select Breeds</label>
+      <div className="breed-input">
         <ReactSelect
           className="breed-dropdown"
           isMulti
@@ -154,7 +163,7 @@ const SearchDog = () => {
       <div className="input-container">
         <input
           className="age-input"
-          type="text"
+          type="number"
           placeholder="Enter Age Min"
           value={ageMin}
           onChange={handleAgeMinChange}
@@ -164,7 +173,7 @@ const SearchDog = () => {
       <div className="input-container">
         <input
           className="age-input"
-          type="text"
+          type="number"
           placeholder="Enter Age Max"
           value={ageMax}
           onChange={handleAgeMaxChange}
@@ -174,10 +183,11 @@ const SearchDog = () => {
       <div className="input-container">
         <input
           className="zip-input"
-          type="text"
+          type="number"
           placeholder="Enter ZIP Code"
           value={zipCode}
           onChange={handleZipChange}
+          maxLength={5}
         />
       </div>
 
