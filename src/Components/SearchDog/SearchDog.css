@@ -1,0 +1,117 @@
+/* Main container */
+.dog-selection-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #e3f2fd;
+  border-radius: 15px;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+/* Title */
+.title {
+  font-size: 1.8rem;
+  color: #0d47a1;
+  margin-bottom: 20px;
+}
+
+/* Labels */
+.label {
+  font-size: 1rem;
+  color: #1565c0;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Dropdown */
+.breed-dropdown {
+  width: 100%;
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+/* Input fields */
+.input-container {
+  margin-bottom: 15px;
+}
+
+.age-input,
+.zip-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #90caf9;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.age-input:focus,
+.zip-input:focus {
+  border-color: #1565c0;
+  box-shadow: 0px 0px 8px rgba(21, 101, 192, 0.5);
+}
+
+/* Sort button */
+.sort-container {
+  margin-top: 15px;
+}
+
+.sort-button {
+  background: #1565c0;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.sort-button:hover {
+  background: #0d47a1;
+  transform: scale(1.05);
+}
+
+.sort-button:active {
+  transform: scale(0.95);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  background-color: #1565c0; /* Dark blue button */
+  color: white;
+  font-size: 16px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  font-weight: bold;
+}
+
+.pagination-button:hover {
+  background-color: #0d47a1;
+  transform: scale(1.05);
+}
+
+.pagination-button:disabled {
+  background-color: #90caf9; /* Lighter blue when disabled */
+  cursor: not-allowed;
+  transform: none;
+}
+
+.page-number {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1565c0;
+}

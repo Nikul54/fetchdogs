@@ -1,0 +1,48 @@
+.dog-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 15px;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.dog-card {
+  background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);
+  border-radius: 15px;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.dog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dog-card img {
+  width: 70%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 100px;
+}
+
+.dog-card h3 {
+  font-size: 1rem;
+  margin: 10px 0;
+  color: #0d47a1;
+}
+
+.dog-card p {
+  font-size: 1rem;
+  color: #1565c0;
+  margin: 3px 0;
+}
+
+@media (max-width: 600px) {
+  .dog-list {
+    grid-template-columns: 1fr;
+  }
+}
