@@ -5,7 +5,7 @@ import DogDetails from '../DogDetails/DogDetails';
 import './SearchDog.css';
 
 const SearchDog = () => {
-  // Add filters
+  // Filter constants
   const [hasSearched, setHasSearched] = useState(false);
   const [dogs, setDogs] = useState([]);
   const [breeds, setBreeds] = useState([]);
@@ -13,25 +13,61 @@ const SearchDog = () => {
   const [zipCode, setZipCode] = useState('');
   const [ageMin, setAgeMin] = useState('');
   const [ageMax, setAgeMax] = useState('');
-  // Add Pagination
+  // Pagination constants
   const [page, setPage] = useState(1);
   const [results, setResults] = useState(25);
   const [hasMore, setHasMore] = useState(true);
-  // Sorting state
   const [sortOrder, setSortOrder] = useState('asc');
+  // Favorites constants
+  const [favorites, setFavorites] = useState([]);
+  const [match, setMatch] = useState(null);
 
-  // Fetch breeds initially
+  // Fetch breeds initially for the dropdown
   useEffect(() => {
     fetchBreeds();
   }, []);
 
+  //Can add dogs to favorites
+  const addToFavorites = (dog) => {
+    setFavorites((prevFavorites) => {
+      if (prevFavorites.some((favorite) => favorite.id === dog.id)) {
+        return prevFavorites.filter((favorite) => favorite.id !== dog.id);
+      }
+      return [...prevFavorites, dog];
+    });
+  };
+
+  //Post call to API to pick a match from favorites
+  const generateMatch = async () => {
+    if (favorites.length === 0) {
+      alert('Please add some dogs to your favorites first!');
+      return;
+    }
+
+    try {
+      const dogIds = favorites.map((dog) => dog.id);
+
+      const response = await axios.post(
+        'https://frontend-take-home-service.fetch.com/dogs/match',
+        dogIds,
+        { withCredentials: true }
+      );
+
+      const matchedDogId = response.data.match; // Matched dog ID from response
+      const matchedDog = favorites.find((dog) => dog.id === matchedDogId);
+      setMatch(matchedDog); // Assuming the response contains the matched dog(s)
+    } catch (error) {
+      console.error('Error generating match:', error);
+    }
+  };
+
+  //Fetches all the dog breeds
   const fetchBreeds = async () => {
     try {
       const response = await axios.get(
         'https://frontend-take-home-service.fetch.com/dogs/breeds',
         { withCredentials: true }
       );
-      console.log('FETCHING BREEDS', response.data);
 
       // We are converting this to an array of objects so React-Select works
       const breedOptions = response.data.map((breed) => ({
@@ -44,6 +80,7 @@ const SearchDog = () => {
     }
   };
 
+  // Fetches the dogs based off filter constants
   const fetchDogs = useCallback(async () => {
     try {
       if (!selectedBreeds.length && !zipCode && !ageMin && !ageMax) {
@@ -87,14 +124,11 @@ const SearchDog = () => {
         const breedA = a.breed?.trim().toLowerCase() || '';
         const breedB = b.breed?.trim().toLowerCase() || '';
 
-        console.log('Comparing Breeds:', breedA, breedB); // For debugging purposes
-
         return sortOrder === 'asc'
           ? breedA.localeCompare(breedB)
           : breedB.localeCompare(breedA);
       });
 
-      console.log('sorted Dogs & breeds: ', selectedBreeds, sortedDogs);
       setDogs(sortedDogs);
     } catch (error) {
       console.error('Error fetching dogs:', error);
@@ -123,7 +157,7 @@ const SearchDog = () => {
     setSelectedBreeds(
       selectedOptions ? selectedOptions.map((option) => option.value) : []
     );
-    setHasSearched(true); // Ensures fetchDogs is called only after user interaction
+    setHasSearched(true);
   };
 
   const handleAgeMinChange = (e) => {
@@ -152,11 +186,11 @@ const SearchDog = () => {
         <ReactSelect
           className="breed-dropdown"
           isMulti
-          options={breeds} // Options from the API
-          value={breeds.filter((breed) => selectedBreeds.includes(breed.value))} // Set the selected breeds
+          options={breeds}
+          value={breeds.filter((breed) => selectedBreeds.includes(breed.value))}
           onChange={handleBreedChange}
           placeholder="Search breeds..."
-          closeMenuOnSelect={false} // Allows multiple selections
+          closeMenuOnSelect={false}
         />
       </div>
 
@@ -197,10 +231,14 @@ const SearchDog = () => {
           Sort {sortOrder === 'asc' ? 'Z-A' : 'A-Z'}
         </button>
       </div>
-
+      {/* Dog List */}
       <div className="dog-list">
         {hasSearched && dogs.length > 0 ? (
-          <DogDetails dog={dogs} />
+          <DogDetails
+            key={dogs.id}
+            dog={dogs}
+            addToFavorites={addToFavorites}
+          />
         ) : hasSearched ? (
           <p className="no-dogs-message">No dogs found for this breed.</p>
         ) : null}
@@ -222,6 +260,46 @@ const SearchDog = () => {
         >
           Next
         </button>
+      </div>
+
+      {/* Favorites Section */}
+      <div className="favorites">
+        <h2>Your Favorites</h2>
+        {favorites.length === 0 ? (
+          <p>No dogs added to favorites yet.</p>
+        ) : (
+          <ul>
+            {favorites.map((dog) => (
+              <li key={dog.id}>
+                {dog.name} ({dog.breed})
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* Generate Match Button */}
+      <button className="match-button" onClick={generateMatch}>
+        Generate Match
+      </button>
+
+      <div className="match-container">
+        {match ? (
+          <div>
+            <h2 className="match-title">Your Perfect Match!</h2>
+            <div className="dog-card match-card">
+              <img className="dog-image" src={match.img} alt={match.name} />
+              <h3 className="dog-name">{match.name}</h3>
+              <p className="dog-breed">Breed: {match.breed}</p>
+              <p className="dog-age">Age: {match.age} years</p>
+              <p className="dog-location">Location: {match.zip_code}</p>
+            </div>
+          </div>
+        ) : (
+          <p className="no-match-message">
+            Click 'Find Match' to see your best dog match!
+          </p>
+        )}
       </div>
     </div>
   );

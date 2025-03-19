@@ -90,7 +90,7 @@
 }
 
 .pagination-button {
-  background-color: #1565c0; /* Dark blue button */
+  background-color: #1565c0;
   color: white;
   font-size: 16px;
   padding: 10px 16px;
@@ -107,7 +107,7 @@
 }
 
 .pagination-button:disabled {
-  background-color: #90caf9; /* Lighter blue when disabled */
+  background-color: #90caf9;
   cursor: not-allowed;
   transform: none;
 }
@@ -116,4 +116,49 @@
   font-size: 18px;
   font-weight: bold;
   color: #1565c0;
+}
+
+.match-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.match-card {
+  background: linear-gradient(
+    to bottom right,
+    #a5d6a7,
+    #81c784
+  ); /* Light green background */
+  border-radius: 15px;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  text-align: center;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.match-title {
+  font-size: 1.5rem;
+  color: #388e3c; /* Darker green for the title */
+  font-weight: bold;
+}
+
+.match-button {
+  background-color: #388e3c; /* Dark green for button */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.match-button:hover {
+  background-color: #2c6b2f;
+}
+
+.no-match-message {
+  font-size: 1rem;
+  color: #757575;
 }

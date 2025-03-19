@@ -1,7 +1,7 @@
 import React from 'react';
 import './DogDetails.css';
 
-const DogDetails = ({ dog }) => {
+const DogDetails = ({ dog, addToFavorites }) => {
   return (
     <div className="dog-container">
       <div className="dog-list">
@@ -13,6 +13,7 @@ const DogDetails = ({ dog }) => {
               <p className="dog-breed">Breed: {dog.breed}</p>
               <p className="dog-age">Age: {dog.age} years</p>
               <p className="dog-location">Location: {dog.zip_code}</p>
+              <button onClick={() => addToFavorites(dog)}>Favorite</button>
             </div>
           ))
         ) : (
